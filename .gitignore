@@ -1,0 +1,7 @@
+.env
+venv/
+__pycache__/
+*.pyc
+tempCodeRunnerFile.py
+logs/1hr.json
+logs/5min.json

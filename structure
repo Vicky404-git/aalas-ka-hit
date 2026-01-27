@@ -1,0 +1,14 @@
+app/
+├─ main.py
+├─ logix.py
+├─ ai_brain.py
+├─ debug.py
+├─ .env
+├─ venv/
+├─ tasks/
+│  ├─ tasks.json        # 5 min
+│  └─ deeptasks.json    # 1 hr (later)
+├─ logs/
+│  ├─ 1hr.json
+│  ├─ 5min.json
+│  └─ state.json
