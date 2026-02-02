@@ -3,5 +3,15 @@ venv/
 __pycache__/
 *.pyc
 tempCodeRunnerFile.py
+
+# Ignore log files
 logs/1hr.json
 logs/5min.json
+
+# Ignore task files
+tasks/mydeeptasks.json
+tasks/mytasks.json
+
+# Ignore debug files
+debug.py
+logix/oldlogix.py
