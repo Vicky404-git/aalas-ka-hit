@@ -15,3 +15,4 @@ tasks/mytasks.json
 # Ignore debug files
 debug.py
 logix/oldlogix.py
+release.md
