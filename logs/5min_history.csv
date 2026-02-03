@@ -1,1 +1,6 @@
 timestamp,date,time,task,tag,type,status,repeated
+1770094561,2026-02-03,10:26:01,Open your project folder and do nothing else.,unknown,5min,inferred_done,False
+1770094562,2026-02-03,10:26:02,Format one file.,code,5min,shown,False
+1770094632,2026-02-03,10:27:12,Format one file.,unknown,5min,done,False
+1770103189,2026-02-03,12:49:49,Rename one messy file properly.,admin,5min,shown,False
+1770103198,2026-02-03,12:49:58,Rename one messy file properly.,unknown,5min,done,False
