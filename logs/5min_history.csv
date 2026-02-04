@@ -1,1 +1,47 @@
 timestamp,date,time,task,tag,type,status,repeated
+1770228521,2026-02-04,23:38:41,Open your project folder and do nothing else.,momentum,5min,shown,True
+1770228529,2026-02-04,23:38:49,Open your project folder and do nothing else.,unknown,5min,done,True
+1770233060,2026-02-05,00:54:20,Run the main script once.,momentum,5min,shown,True
+1770233074,2026-02-05,00:54:34,Run the main script once.,unknown,5min,done,True
+1770233326,2026-02-05,00:58:46,Rename one messy file properly.,admin,5min,shown,True
+1770233333,2026-02-05,00:58:53,Rename one messy file properly.,unknown,5min,done,True
+1770234154,2026-02-05,01:12:34,Open your project folder and do nothing else.,momentum,5min,shown,True
+1770234161,2026-02-05,01:12:41,Open your project folder and do nothing else.,unknown,5min,done,True
+1770234269,2026-02-05,01:14:29,Run the main script once.,momentum,5min,shown,True
+1770234280,2026-02-05,01:14:40,Run the main script once.,unknown,5min,done,True
+1770234369,2026-02-05,01:16:09,Fix one typo anywhere.,momentum,5min,shown,True
+1770234379,2026-02-05,01:16:19,Fix one typo anywhere.,unknown,5min,done,True
+1770234408,2026-02-05,01:16:48,Run the main script once.,momentum,5min,shown,True
+1770234417,2026-02-05,01:16:57,Run the main script once.,unknown,5min,done,True
+1770234459,2026-02-05,01:17:39,Fix one typo anywhere.,momentum,5min,shown,True
+1770234470,2026-02-05,01:17:50,Fix one typo anywhere.,unknown,5min,done,True
+1770234506,2026-02-05,01:18:26,Run the main script once.,momentum,5min,shown,True
+1770234528,2026-02-05,01:18:48,Run the main script once.,unknown,5min,done,True
+1770234562,2026-02-05,01:19:22,Fix one typo anywhere.,momentum,5min,shown,True
+1770234567,2026-02-05,01:19:27,Fix one typo anywhere.,unknown,5min,done,True
+1770234599,2026-02-05,01:19:59,Format one file.,code,5min,shown,False
+1770234609,2026-02-05,01:20:09,Format one file.,unknown,5min,done,False
+1770234713,2026-02-05,01:21:53,Fix one typo anywhere.,momentum,5min,shown,True
+1770234722,2026-02-05,01:22:02,Fix one typo anywhere.,unknown,5min,done,True
+1770234849,2026-02-05,01:24:09,Read one function you wrote earlier.,code,5min,shown,False
+1770234862,2026-02-05,01:24:22,Read one function you wrote earlier.,unknown,5min,done,False
+1770234933,2026-02-05,01:25:33,Add a TODO comment somewhere.,code,5min,shown,False
+1770234943,2026-02-05,01:25:43,Add a TODO comment somewhere.,unknown,5min,done,False
+1770234988,2026-02-05,01:26:28,Delete one unused variable.,cleanup,5min,shown,False
+1770235010,2026-02-05,01:26:50,Delete one unused variable.,unknown,5min,done,False
+1770235038,2026-02-05,01:27:18,Delete one unused file.,cleanup,5min,shown,False
+1770235048,2026-02-05,01:27:28,Delete one unused file.,unknown,5min,done,False
+1770235080,2026-02-05,01:28:00,Rename one messy file properly.,admin,5min,shown,True
+1770235091,2026-02-05,01:28:11,Rename one messy file properly.,unknown,5min,done,True
+1770235109,2026-02-05,01:28:29,Run the main script once.,momentum,5min,shown,True
+1770235120,2026-02-05,01:28:40,Run the main script once.,unknown,5min,done,True
+1770235134,2026-02-05,01:28:54,Rename one variable to something clearer.,code,5min,shown,False
+1770235145,2026-02-05,01:29:05,Rename one variable to something clearer.,unknown,5min,done,False
+1770236460,2026-02-05,01:51:00,Open your project folder and do nothing else.,momentum,5min,shown,True
+1770236470,2026-02-05,01:51:10,Open your project folder and do nothing else.,unknown,5min,done,True
+1770236536,2026-02-05,01:52:16,Rename one messy file properly.,admin,5min,shown,True
+1770236547,2026-02-05,01:52:27,Rename one messy file properly.,unknown,5min,done,True
+1770236700,2026-02-05,01:55:00,Fix one typo anywhere.,momentum,5min,shown,True
+1770236710,2026-02-05,01:55:10,Fix one typo anywhere.,unknown,5min,done,True
+1770236731,2026-02-05,01:55:31,Open your project folder and do nothing else.,momentum,5min,shown,True
+1770236740,2026-02-05,01:55:40,Open your project folder and do nothing else.,unknown,5min,done,True

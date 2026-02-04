@@ -8,6 +8,10 @@ LOG_DIR = os.path.join(BASE_DIR, "logs")
 FIVE_MIN_LOG = os.path.join(LOG_DIR, "5min.json")
 ONE_HR_LOG = os.path.join(LOG_DIR, "1hr.json")
 
+# --- MOVED FROM MAIN.PY ---
+def load_tasks(path):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def load_log(path, default):
     if not os.path.exists(path):
@@ -15,16 +19,13 @@ def load_log(path, default):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-
 def save_log(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
-
 def get_week_start(d=None):
     d = d or date.today()
     return str(d - timedelta(days=d.weekday()))
-
 
 def normalize_1hr_week(log):
     current_week = get_week_start()
@@ -32,7 +33,6 @@ def normalize_1hr_week(log):
         log["week_start"] = current_week
         log["weekly_count"] = 0
     return log
-
 
 def load_5min_log():
     return load_log(FIVE_MIN_LOG, {
@@ -42,9 +42,11 @@ def load_5min_log():
         "recent_tasks": [],
         "recent_tags": [],
         "last_task": None,
-        "last_task_result": "unknown"
-    })
+        "last_task_result": "unknown",
+        "ignored_today": 0,
+        "tag_scores": {}
 
+    })
 
 def load_1hr_log():
     log = load_log(ONE_HR_LOG, {

@@ -1,11 +1,8 @@
 {
-  "last_date": "",
-  "last_shown_ts": 1769520480,
-  "daily_5min_count": 3,
-  "daily_1hr_count": 0,
-  "recent_tasks": [
-    "Stand near a window for 2 minutes.",
-    "Open a notebook and write one bad sentence.",
-    "Clean one tiny surface only."
-  ]
+  "tag_scores": {
+    "study": 0,
+    "coding": 1,
+    "health": 2
+  },
+  "silent_until": null
 }

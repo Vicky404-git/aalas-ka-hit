@@ -10,6 +10,7 @@ logs/5min.json
 logs/1hr_history.csv
 logs/5min_history.csv
 
+
 # Ignore task files
 tasks/mydeeptasks.json
 tasks/mytasks.json

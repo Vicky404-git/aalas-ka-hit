@@ -1,40 +1,61 @@
 import time
 from logix.event_log import log_event
+from logix.state import save_log, FIVE_MIN_LOG, ONE_HR_LOG # Imported for saving
 
 MIN_GAP = 30 * 60  # 30 minutes
-
-# States that are considered "final" - we won't overwrite them
 FINAL_RESULTS = {"done", "skipped", "ignored", "inferred_done"}
 
-def infer_last_outcome(log, now_ts, task_type, log_to_csv=True):
-    """
-    Checks the previous task. If the user didn't click Done/Skip,
-    this decides if it was 'ignored' (overwritten quickly) 
-    or 'inferred_done' (left alone for a long time).
-    """
+# --- MOVED FROM MAIN.PY ---
+def process_user_action(log1, log5, action, target_type):
+    """Updates logs, scores, and history based on user click."""
+    
+    def _record(log, log_path, csv_path, t_type):
+        # 1. Apply Learning
+        mock_task = {"tag": log.get("last_tag", "unknown")}
+        update_tag_scores(log, mock_task, action)
 
-    # If there's no task history, do nothing
+        # 2. Update Result
+        log["last_task_result"] = action
+        
+        # 3. Track Skips (Burnout prevention)
+        if action == "skipped" and t_type == "5min":
+            log["ignored_today"] = log.get("ignored_today", 0) + 1
+        
+        # 4. Save
+        save_log(log_path, log)
+        log_event(
+            csv_path,
+            log.get("last_task", "Unknown"),
+            "unknown",
+            t_type,
+            action,
+            log.get("last_task_repeated", False)
+        )
+
+    if target_type == "1hr":
+        _record(log1, ONE_HR_LOG, "logs/1hr_history.csv", "1hr")
+    else:
+        _record(log5, FIVE_MIN_LOG, "logs/5min_history.csv", "5min")
+
+    return log1, log5
+
+
+def infer_last_outcome(log, now_ts, task_type, log_to_csv=True):
     if not log.get("last_task") or not log.get("last_shown_ts"):
         return log
 
-    # If already marked done/skip, don't change it
     if log.get("last_task_result") in FINAL_RESULTS:
         return log
 
     elapsed = now_ts - log["last_shown_ts"]
 
-    # LOGIC:
-    # If the script runs again very soon (<30 mins), the user likely "Ignored" the notification.
-    # If the script runs much later (>30 mins), we assume they might have done it ("inferred_done").
     if elapsed < MIN_GAP:
         result = "ignored"
     else:
         result = "inferred_done"
 
-    # Update in-memory state (so we know for next time)
     log["last_task_result"] = result
 
-    # Log to CSV
     if log_to_csv:
         log_event(
             f"logs/{task_type}_history.csv",
@@ -46,3 +67,14 @@ def infer_last_outcome(log, now_ts, task_type, log_to_csv=True):
         )
 
     return log
+
+def update_tag_scores(log, task, outcome):
+    tag_scores = log.setdefault("tag_scores", {})
+    for tag in task.get("tag", [] if isinstance(task.get("tag"), list) else [task["tag"]]):
+        tag_scores.setdefault(tag, 0)
+        if outcome == "done":
+            tag_scores[tag] += 1
+        elif outcome == "ignored":
+            tag_scores[tag] -= 1
+
+        tag_scores[tag] = max(-3, min(3, tag_scores[tag]))
