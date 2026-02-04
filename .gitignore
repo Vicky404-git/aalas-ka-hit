@@ -1,0 +1,20 @@
+.env
+venv/
+__pycache__/
+*.pyc
+tempCodeRunnerFile.py
+
+# Ignore log files
+logs/1hr.json
+logs/5min.json
+logs/1hr_history.csv
+logs/5min_history.csv
+
+# Ignore task files
+tasks/mydeeptasks.json
+tasks/mytasks.json
+
+# Ignore debug files
+debug.py
+logix/oldlogix.py
+release.md

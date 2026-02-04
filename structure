@@ -1,0 +1,20 @@
+app/
+├─ main.py
+├─ ai_brain.py
+├─ debug.py
+├─ .env
+├─ venv/
+├─ tasks/
+│  ├─ tasks.json        # 5 min
+│  └─ deeptasks.json    # 1 hr (later)
+├─ logs/
+│  ├─ 1hr_history.csv
+│  ├─ 5min_history.csv
+│  ├─ 1hr.json
+│  ├─ 5min.json
+│  └─ state.json
+├─ logix/
+│  ├─ selector.py         # pick tasks (5min / 1hr)
+│  ├─ rules.py            # when tasks are allowed
+│  ├─ outcome.py          # done / ignored inference
+│  └─ state.py            # read/write logs

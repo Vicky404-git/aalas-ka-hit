@@ -1,0 +1,7 @@
+[
+    { "text": "Implement one small CLI command end-to-end.", "tag": "code" },
+    { "text": "Add argument parsing using argparse or similar.", "tag": "code" },
+    { "text": "Refactor one file to reduce duplication.", "tag": "code" },
+    { "text": "Split one large function into smaller ones.", "tag": "code" },
+    { "text": "Add basic error handling to one feature.", "tag": "code" }
+]
