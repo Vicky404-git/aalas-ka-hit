@@ -18,3 +18,5 @@ tasks/mytasks.json
 debug.py
 logix/oldlogix.py
 release.md
+_act_done.bat
+_act_skip.bat
