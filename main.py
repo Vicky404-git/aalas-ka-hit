@@ -10,7 +10,13 @@ from logix.rules import can_show_1hr
 from logix.selector import select_5min_task, select_1hr_task
 from logix.outcome import infer_last_outcome
 from logix.event_log import log_event
-from ai_brain import rephrase_task
+import psutil
+try:
+    from ai_brain import rephrase_task
+except ImportError:
+    # This runs if 'ai_brain.py' is deleted or missing
+    def rephrase_task(task_text):
+        return task_text
 
 # ─────────────────────────────────────────────
 # 1. PARSE ARGUMENTS
@@ -87,7 +93,22 @@ now_ts = int(time.time())
 today = str(date.today())
 
 # Mock Context (Replace with real sensors later)
-battery_percent = 80
+# ─────────────────────────────────────────────
+# REAL SENSORS (Replaces Mock Context)
+# ─────────────────────────────────────────────
+battery = psutil.sensors_battery()
+
+# Desktop users might not have a battery, so we fallback to 100%
+if battery:
+    battery_percent = battery.percent
+    is_plugged = battery.power_plugged
+else:
+    battery_percent = 100
+    is_plugged = True
+
+# Awake time is complex to get via Python cross-platform. 
+# Keeping this mocked for now, or you can use `psutil.boot_time()` 
+# to calculate system uptime instead of user awake time.
 awake_seconds = 3 * 60 * 60
 
 # Load Data
