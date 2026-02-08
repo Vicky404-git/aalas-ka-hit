@@ -18,3 +18,9 @@ app/
 │  ├─ rules.py            # when tasks are allowed
 │  ├─ outcome.py          # done / ignored inference
 │  └─ state.py            # read/write logs
+├─ memory/
+│  ├─index.py
+│  ├─embedder.py
+│  ├─reflect.py
+│  ├─rag.py
+│  ├─window.py

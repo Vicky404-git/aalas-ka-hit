@@ -1,7 +1,9 @@
-from langchain_groq import ChatGroq
-from langchain_core.prompts import PromptTemplate
 import os
 from dotenv import load_dotenv
+from langchain_groq import ChatGroq
+from langchain_core.prompts import PromptTemplate
+
+from memory.promptemplates import build_prompt
 
 load_dotenv()
 
@@ -12,8 +14,23 @@ llm = ChatGroq(
 )
 
 
-def rephrase_task(task: str) -> str:
-    prompt_text = """
+def rephrase_task(
+    task_text: str,
+    memory_context: str | None = None,
+    mode: str = "reflect"
+) -> str:
+    """
+    Language layer ONLY.
+
+    - If memory_context is None → v0.2 behavior (simple rephrase)
+    - If memory_context is provided → v0.3 RAG-based phrasing
+    """
+
+    # ─────────────────────────────────────
+    # v0.2 MODE (no RAG, just rephrasing)
+    # ─────────────────────────────────────
+    if not memory_context:
+        prompt_text = """
 Rewrite this task in a light, playful "soft dare" tone.
 
 Vibe:
@@ -22,14 +39,14 @@ Vibe:
 - Friendly nudge, not advice
 - Feels like: "eh, try it"
 - Low pressure, but not sleepy
-- fun and engaging
+- Fun and engaging
 
 Rules:
 - Under 25 words
 - Same meaning
 - No motivational talk
 - Humor allowed (dry, subtle)
-- Emojis optional 
+- Emojis optional
 - Do NOT repeat verbatim
 - Start with "AI-generated:"
 
@@ -38,12 +55,28 @@ Task:
 
 Output only the rewritten task.
 """
+        prompt = PromptTemplate.from_template(prompt_text)
+        chain = prompt | llm
+
+        try:
+            result = chain.invoke({"task": task_text}).content.strip()
+            return result if result else task_text
+        except Exception:
+            return task_text
+
+    # ─────────────────────────────────────
+    # v0.3 MODE (RAG + prompt templates)
+    # ─────────────────────────────────────
+    prompt_text = build_prompt(
+        mode=mode,
+        memory_context=memory_context
+    )
 
     prompt = PromptTemplate.from_template(prompt_text)
     chain = prompt | llm
 
     try:
-        result = chain.invoke({"task": task}).content.strip()
-        return result if result else task
+        result = chain.invoke({}).content.strip()
+        return result if result else task_text
     except Exception:
-        return task
+        return task_text

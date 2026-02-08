@@ -1,4 +1,3 @@
-import time
 from logix.event_log import log_event
 from logix.state import save_log, FIVE_MIN_LOG, ONE_HR_LOG # Imported for saving
 
