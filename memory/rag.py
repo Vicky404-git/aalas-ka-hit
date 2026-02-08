@@ -1,7 +1,6 @@
 import os
 import json
 import numpy as np
-from memory.window import get_last_full_week_range
 from sentence_transformers import SentenceTransformer
 
 MODEL = SentenceTransformer("all-MiniLM-L6-v2")
@@ -79,14 +78,14 @@ def get_week_key():
 
 
 def load_texts(mode):
-    from memory.window import load_last_7_days, get_last_full_week_range
+    from memory.window import load_last_7_days_all, get_last_full_week_range
 
     rows = []
     if mode == "weekly":
         start, end = get_last_full_week_range()
         rows = load_csv_range(start, end)
     else:
-        rows = load_last_7_days()
+        rows = load_last_7_days_all()
 
     return [
         f"Task: {r['task']} | Time: {r['time']} | Outcome: {r['status']}"
