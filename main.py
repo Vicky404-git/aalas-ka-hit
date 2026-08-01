@@ -3,7 +3,11 @@ import sys
 import time
 from datetime import date
 from pathlib import Path
-from winotify import Notification, audio
+import platform
+
+IS_WINDOWS = platform.system() == "Windows"
+if IS_WINDOWS:
+    from winotify import Notification, audio
 
 from logix.state import (
     load_5min_log, load_1hr_log, save_log, load_tasks,
@@ -111,18 +115,45 @@ def main():
     python = sys.executable
     script = os.path.abspath(__file__)
 
-    # Create temporary callback scripts
-    for act in ["done", "skip"]:
-        with open(f"_act_{act}.bat", "w") as f:
-            f.write(f'@echo off\n"{python}" "{script}" --{act} --type {selected_type}')
+    if IS_WINDOWS:
+        # Windows Notification Flow
+        for act in ["done", "skip"]:
+            with open(f"_act_{act}.bat", "w") as f:
+                f.write(f'@echo off\n"{python}" "{script}" --{act} --type {selected_type}')
 
-    toast = Notification(app_id="aalas-ka-hit", title="if you've got time", msg=final_text, duration="short")
-    toast.add_actions(label="Done", launch=os.path.abspath("_act_done.bat"))
-    toast.add_actions(label="Skip", launch=os.path.abspath("_act_skip.bat"))
-    toast.set_audio(audio.Default, loop=False)
-    toast.show()
-    time.sleep(5)
+        toast = Notification(app_id="aalas-ka-hit", title="if you've got time", msg=final_text, duration="short")
+        toast.add_actions(label="Done", launch=os.path.abspath("_act_done.bat"))
+        toast.add_actions(label="Skip", launch=os.path.abspath("_act_skip.bat"))
+        toast.set_audio(audio.Default, loop=False)
+        toast.show()
+        time.sleep(5)
 
+    else:
+        # Linux (Debian / i3 / Dunst) Flow
+        import subprocess
+
+        # Try dunstify (supports interactive buttons in i3)
+        try:
+            res = subprocess.run(
+                [
+                    "dunstify",
+                    "-A", "done,Done",
+                    "-A", "skip,Skip",
+                    "-t", "10000",
+                    "aalas-ka-hit 💤",
+                    final_text
+                ],
+                capture_output=True,
+                text=True
+            )
+            action_clicked = res.stdout.strip()
+            
+            if action_clicked in ["done", "skip"]:
+                subprocess.run([python, script, f"--{action_clicked}", "--type", selected_type])
+
+        except FileNotFoundError:
+            # Fallback to standard notify-send if dunstify isn't installed
+            subprocess.run(["notify-send", "-u", "normal", "aalas-ka-hit 💤", final_text])
 
 if __name__ == "__main__":
     main()
