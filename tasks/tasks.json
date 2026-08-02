@@ -1,12 +1,46 @@
 [
-    { "text": "Rename one messy file properly.", "tag": "admin" },
-    { "text": "Fix one typo anywhere.", "tag": "momentum" },
-    { "text": "Open your project folder and do nothing else.", "tag": "momentum" },
-    { "text": "Run the main script once.", "tag": "momentum" },
-    { "text": "Delete one unused file.", "tag": "cleanup" },
-    { "text": "Delete one unused variable.", "tag": "cleanup" },
-    { "text": "Add a TODO comment somewhere.", "tag": "code" },
-    { "text": "Read one function you wrote earlier.", "tag": "code" },
-    { "text": "Format one file.", "tag": "code" },
-    { "text": "Rename one variable to something clearer.", "tag": "code" }
+    {
+        "text": "Rename one messy file properly.",
+        "tag": "admin"
+    },
+    {
+        "text": "Fix one typo anywhere.",
+        "tag": "momentum"
+    },
+    {
+        "text": "Open your project folder and do nothing else.",
+        "tag": "momentum"
+    },
+    {
+        "text": "Run the main script once.",
+        "tag": "momentum"
+    },
+    {
+        "text": "Delete one unused file.",
+        "tag": "cleanup"
+    },
+    {
+        "text": "Delete one unused variable.",
+        "tag": "cleanup"
+    },
+    {
+        "text": "Add a TODO comment somewhere.",
+        "tag": "code"
+    },
+    {
+        "text": "Read one function you wrote earlier.",
+        "tag": "code"
+    },
+    {
+        "text": "Format one file.",
+        "tag": "code"
+    },
+    {
+        "text": "Rename one variable to something clearer.",
+        "tag": "code"
+    },
+    {
+        "text": "Implement one small CLI command end-to-end.",
+        "tag": "code"
+    }
 ]

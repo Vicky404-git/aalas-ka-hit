@@ -14,6 +14,15 @@ llm = ChatGroq(
 )
 
 
+def ask_ai(prompt: str) -> str:
+    """Generic LLM query interface."""
+    try:
+        response = llm.invoke(prompt)
+        return response.content.strip()
+    except Exception as e:
+        return f'{{"error": "AI query failed: {str(e)}"}}'
+
+
 def rephrase_task(
     task_text: str,
     memory_context: str | None = None,
