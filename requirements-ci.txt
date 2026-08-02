@@ -1,0 +1,14 @@
+# Include core app dependencies
+-r requirements.txt
+
+# CI & Testing Tools
+pytest==8.3.5
+ruff==0.16.1
+
+# Key CLI & Runner dependencies
+click==8.1.8
+jinja2==3.1.6
+pyyaml==6.0.2
+requests==2.32.3
+rich==13.9.4
+psutil==7.0.0

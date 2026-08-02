@@ -29,8 +29,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f requirements-ci.txt ]; then
+            pip install -r requirements-ci.txt
+          elif [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+            pip install ruff pytest
+          fi
         shell: bash
 
       - name: Ensure test directories exist
@@ -41,7 +45,6 @@ jobs:
       - name: 1. Syntax & Critical Error Check
         run: |
           python -m compileall .
-          # Stop build if there are Python syntax errors or undefined names
           ruff check . --select=E9,F63,F7,F82
         shell: bash
 
