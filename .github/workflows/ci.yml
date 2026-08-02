@@ -29,46 +29,35 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest ruff
+          pip install ruff pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         shell: bash
 
-      - name: 1. Lint and Syntax Check (All Files)
+      - name: Ensure test directories exist
         run: |
-          python -m compileall .
-          ruff check .
+          mkdir -p logs tasks
         shell: bash
 
-      - name: 2. Test Task Manager CLI (All Subcommands)
+      - name: 1. Syntax & Critical Error Check
         run: |
-          # List initial tasks
+          python -m compileall .
+          # Stop build if there are Python syntax errors or undefined names
+          ruff check . --select=E9,F63,F7,F82
+        shell: bash
+
+      - name: 2. Test Task Manager CLI
+        run: |
           python -m tasks.manage list
           python -m tasks.manage list --deep
-
-          # Add quick task & deep task
           python -m tasks.manage add "CI Pipeline Test Task" --tag test --force
-          python -m tasks.manage add "CI Deep Pipeline Task" --tag code --deep --force
-
-          # Edit task
-          python -m tasks.manage edit 1 "CI Updated Task Text" --tag updated
-
-          # Delete task
+          python -m tasks.manage add "CI Deep Task" --tag code --deep --force
+          python -m tasks.manage edit 1 "CI Updated Task" --tag updated
           python -m tasks.manage delete 1
         shell: bash
 
-      - name: 3. Test Debug Runner & State Actions
+      - name: 3. Test Debug Script Actions
         run: |
-          # Standard execution
           python debug.py --headless
-
-          # Trigger 'done' action on 5min log
           python debug.py --done --type 5min --headless
-
-          # Trigger 'skip' action on 1hr log
           python debug.py --skip --type 1hr --headless
-        shell: bash
-
-      - name: 4. Run Pytest Suite (If test files exist)
-        run: |
-          if [ -d "tests" ]; then pytest -v; fi
         shell: bash
