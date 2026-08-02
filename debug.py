@@ -1,8 +1,23 @@
 import time
 import sys
 import os
+import platform
 from datetime import date
-from winotify import Notification, audio
+
+# ─────────────────────────────────────────────
+# PLATFORM & CI ENVIRONMENT DETECTION
+# ─────────────────────────────────────────────
+IS_WINDOWS = platform.system() == "Windows"
+IS_CI = os.getenv("GITHUB_ACTIONS") == "true" or "--headless" in sys.argv
+
+# Safe winotify import for Windows non-CI runs
+HAS_WINOTIFY = False
+if IS_WINDOWS and not IS_CI:
+    try:
+        from winotify import Notification, audio
+        HAS_WINOTIFY = True
+    except ImportError:
+        HAS_WINOTIFY = False
 
 # ─────────────────────────────────────────────
 # IMPORTS (Aligned with modular structure)
@@ -11,7 +26,7 @@ from logix.state import (
     load_5min_log,
     load_1hr_log,
     save_log,
-    load_tasks,      # <--- Now using the shared loader
+    load_tasks,      # Shared task loader
     FIVE_MIN_LOG,
     ONE_HR_LOG
 )
@@ -55,6 +70,7 @@ today = str(date.today())
 
 print(f"⏱  Now Timestamp : {now_ts}")
 print(f"📅 Today         : {today}")
+print(f"💻 Environment   : {'GitHub CI / Headless' if IS_CI else platform.system()}")
 print(f"💾 Write Mode    : {'ENABLED' if SIMULATE_STATE_WRITE else 'READ-ONLY'}")
 print(f"🔋 Mock Battery  : {MOCK_BATTERY}%")
 print(f"⏰ Mock Awake    : {MOCK_AWAKE_HOURS}h\n")
@@ -68,7 +84,7 @@ if action:
     log5 = load_5min_log()
     log1 = load_1hr_log()
 
-    # We manually replicate 'process_user_action' here to respect SIMULATE flags
+    # Replicate 'process_user_action' here to respect SIMULATE flags
     def record_debug_action(log, log_path, csv_path, t_type, act):
         # 1. Apply Learning (Score Update)
         last_tag = log.get("last_tag", "unknown")
@@ -141,7 +157,7 @@ if can_1hr:
     print("\n🎯 DECISION: Show 1-HOUR Task")
     selected_type = "1hr"
     
-    tasks = load_tasks("tasks/deeptasks.json") # Using new loader
+    tasks = load_tasks("tasks/deeptasks.json")
     task, log1 = select_1hr_task(tasks, log1)
 
     # CRITICAL UPDATES
@@ -159,7 +175,7 @@ else:
     print("\n⚡ DECISION: Show 5-MIN Task")
     selected_type = "5min"
     
-    tasks = load_tasks("tasks/tasks.json") # Using new loader
+    tasks = load_tasks("tasks/tasks.json")
     task, log5 = select_5min_task(tasks, log5)
 
     # CRITICAL UPDATES
@@ -176,30 +192,37 @@ print(f"   ├─ Task: {task['text']}")
 print(f"   └─ Tag : {task.get('tag')}")
 
 # ─────────────────────────────────────────────
-# 5. SEND NOTIFICATION
+# 5. SEND NOTIFICATION / PRINT OUTPUT
 # ─────────────────────────────────────────────
-python = sys.executable
-script = os.path.abspath(__file__)
+if HAS_WINOTIFY:
+    python = sys.executable
+    script = os.path.abspath(__file__)
 
-# Generate debug .bat files
-bat_done_content = f'@echo off\n"{python}" "{script}" --done --type {selected_type}'
-bat_skip_content = f'@echo off\n"{python}" "{script}" --skip --type {selected_type}'
+    # Generate debug .bat files
+    bat_done_content = f'@echo off\n"{python}" "{script}" --done --type {selected_type}'
+    bat_skip_content = f'@echo off\n"{python}" "{script}" --skip --type {selected_type}'
 
-with open("_debug_done.bat", "w") as f: f.write(bat_done_content)
-with open("_debug_skip.bat", "w") as f: f.write(bat_skip_content)
+    with open("_debug_done.bat", "w") as f: f.write(bat_done_content)
+    with open("_debug_skip.bat", "w") as f: f.write(bat_skip_content)
 
-toast = Notification(
-    app_id="aalas-ka-hit (DEBUG)",
-    title=f"DEBUG: {selected_type} task",
-    msg=task["text"],
-    duration="short"
-)
+    toast = Notification(
+        app_id="aalas-ka-hit (DEBUG)",
+        title=f"DEBUG: {selected_type} task",
+        msg=task["text"],
+        duration="short"
+    )
 
-toast.add_actions(label="Done", launch=os.path.abspath("_debug_done.bat"))
-toast.add_actions(label="Skip", launch=os.path.abspath("_debug_skip.bat"))
+    toast.add_actions(label="Done", launch=os.path.abspath("_debug_done.bat"))
+    toast.add_actions(label="Skip", launch=os.path.abspath("_debug_skip.bat"))
 
-toast.set_audio(audio.Default, loop=False)
-toast.show()
+    toast.set_audio(audio.Default, loop=False)
+    toast.show()
 
-print("\n📣 Notification Sent. Waiting for interaction...")
+    print("\n📣 Windows Notification Sent. Waiting for interaction...")
+else:
+    print("\n📣 [CI / HEADLESS NOTIFICATION LOG]")
+    print(f"   ├─ Title   : DEBUG: {selected_type} task")
+    print(f"   └─ Task    : {task['text']}")
+    print("   (Desktop notification skipped for CI/Headless environment)")
+
 print("=" * 60)
