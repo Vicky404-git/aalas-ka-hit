@@ -11,6 +11,11 @@ jobs:
     name: Build & Test (${{ matrix.os }} - Py ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     
+    # ── FORCE UTF-8 ENCODING GLOBALLY FOR WINDOWS RUNNERS ──
+    env:
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: "utf-8"
+
     strategy:
       fail-fast: false
       matrix:
